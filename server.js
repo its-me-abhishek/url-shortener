@@ -1,7 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const ShortUrl = require('./models/shortUrl');
+const QRCode = require('qrcode');
 const app = express();
+
+app.use(express.static('public'));
 
 mongoose.connect('mongodb://localhost/urlShortener', {
   useNewUrlParser: true, useUnifiedTopology: true
@@ -16,7 +19,9 @@ app.get('/', async (req, res) => {
 });
 
 app.post('/shortUrls', async (req, res) => {
-  await ShortUrl.create({ full: req.body.fullUrl });
+  const newShortUrl = await ShortUrl.create({ full: req.body.fullUrl });
+  generateQRCode(newShortUrl.short);
+
   res.redirect('/');
 });
 
@@ -44,6 +49,15 @@ app.delete('/deleteUrl/:urlId', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+async function generateQRCode(shortUrl) {
+  try {
+    await QRCode.toFile(`public/qrcodes/${shortUrl}.png`, shortUrl);
+    console.log('QR Code generated successfully for:', shortUrl);
+  } catch (error) {
+    console.error('Error generating QR code:', error);
+  }
+}
 
 app.listen(process.env.PORT || 5000, () => {
   console.log('Server is running...');

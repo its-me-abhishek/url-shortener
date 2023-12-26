@@ -26,7 +26,8 @@
                 <tr>
                     <th>Full URL</th>
                     <th>Short URL</th>
-                    <th>Click</th>
+                    <th>QR Code</th>
+                    <th>Clicks</th>
                     <th>Copy</th>
                     <th>Share</th>
                     <th>Delete</th>
@@ -41,6 +42,10 @@
                         <td><a href="<%= shortUrl.short %>">
                                 <%= shortUrl.short %>
                             </a></td>
+                        <td>
+                            <button onclick="openQRCode('<%= shortUrl.short %>')" class="btn btn-info btn-sm">QR
+                                Code</button>
+                        </td>
                         <td>
                             <%= shortUrl.clicks %>
                         </td>
@@ -123,6 +128,11 @@
             } catch (error) {
                 console.error('Error deleting URL:', error);
             }
+        }
+
+        // QR must open in a new tab
+        function openQRCode(shortUrl) {
+            window.open(`/qrcodes/${shortUrl}.png`, '_blank');
         }
     </script>
 </body>
