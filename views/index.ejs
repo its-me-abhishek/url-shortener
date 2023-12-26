@@ -26,6 +26,7 @@
                 <th>Full URL</th>
                 <th>Short URL</th>
                 <th>Click</th>
+                <th>Copy Short URL</th>
             </tr>
         </thead>
         <tbody>
@@ -40,10 +41,33 @@
                     <td>
                         <%= shortUrl.clicks %>
                     </td>
+                    <td>
+                        <button onclick="copyText('<%= shortUrl.short %>')" class="btn btn-primary"
+                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Copy</button>
+                    </td>
                 </tr>
                 <% }) %>
         </tbody>
     </table>
 </body>
+
+<script>
+    function copyText(text) {
+        const tempTextarea = document.createElement('textarea');
+        tempTextarea.value = text;
+
+        document.body.appendChild(tempTextarea);
+
+        tempTextarea.select();
+        tempTextarea.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(tempTextarea.value);
+
+        // Remove the temporary textarea
+        document.body.removeChild(tempTextarea);
+
+        // You can also provide user feedback (e.g., show a tooltip or alert)
+        alert('Copied to clipboard: ' + text);
+    }
+</script>
 
 </html>
