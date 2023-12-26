@@ -9,7 +9,7 @@
     <title>Url Shortener</title>
 </head>
 
-<body style="padding: 25px;">
+<body class="p-4">
     <h1 class="text-center">URL Shortener</h1>
     <form action="/shortUrls" method="post" class="my-4">
         <label class="form-label" for="fullUrl">URL</label>
@@ -20,17 +20,19 @@
         </div>
     </form>
 
-    <table class="table table-striped table-responsive">
-        <thead>
-            <tr>
-                <th>Full URL</th>
-                <th>Short URL</th>
-                <th>Click</th>
-                <th>Copy Short URL</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% shortUrls.forEach(shortUrl=> { %>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Full URL</th>
+                    <th>Short URL</th>
+                    <th>Click</th>
+                    <th>Copy</th>
+                    <th>Share</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% shortUrls.forEach(shortUrl => { %>
                 <tr>
                     <td><a href="<%= shortUrl.full %>">
                             <%= shortUrl.full %>
@@ -42,32 +44,49 @@
                         <%= shortUrl.clicks %>
                     </td>
                     <td>
-                        <button onclick="copyText('<%= shortUrl.short %>')" class="btn btn-primary"
-                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Copy</button>
+                        <button onclick="copyUrl('<%= shortUrl.short %>')" class="btn btn-primary btn-sm">Copy</button>
+                    </td>
+                    <td>
+                        <button onclick="shareUrl('<%= shortUrl.short %>')" class="btn btn-success btn-sm">Share</button>
                     </td>
                 </tr>
                 <% }) %>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function copyUrl(text) {
+            const tempTextarea = document.createElement('textarea');
+            tempTextarea.value = text;
+
+            document.body.appendChild(tempTextarea);
+
+            tempTextarea.select();
+            tempTextarea.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(tempTextarea.value);
+
+            // Remove the temporary textarea
+            document.body.removeChild(tempTextarea);
+
+            // You can also provide user feedback (e.g., show a tooltip or alert)
+            alert('Copied to clipboard: ' + text);
+        }
+
+        function shareUrl(text) {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Check out this URL',
+                    text: 'Shortened URL: ' + text,
+                    url: text,
+                }).then(() => console.log('Shared successfully'))
+                    .catch((error) => console.error('Error sharing:', error));
+            } else {
+                // If Web Share API is not supported
+                alert('Sharing is not supported on this browser.');
+            }
+        }
+    </script>
 </body>
-
-<script>
-    function copyText(text) {
-        const tempTextarea = document.createElement('textarea');
-        tempTextarea.value = text;
-
-        document.body.appendChild(tempTextarea);
-
-        tempTextarea.select();
-        tempTextarea.setSelectionRange(0, 99999);
-        navigator.clipboard.writeText(tempTextarea.value);
-
-        // Remove the temporary textarea
-        document.body.removeChild(tempTextarea);
-
-        // You can also provide user feedback (e.g., show a tooltip or alert)
-        alert('Copied to clipboard: ' + text);
-    }
-</script>
 
 </html>
