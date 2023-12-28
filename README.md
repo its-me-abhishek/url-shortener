@@ -1,6 +1,6 @@
 ## About
 - Built with Express.js and Node.js for the backend, utilizing Bootstrap for the frontend, and MongoDB as the database, this URL Shortener provides a streamlined experience.
-- To access the homepage, navigate to [localhost](http://localhost:5000/).
+- To access the homepage, navigate to [http://localhost:5000/](http://localhost:5000/).
 - The User can input a URL, shrink it, and use it!
 - Additionally, the system automatically generates a QR code for the shortened link.
 - Users have the flexibility to copy, share, and delete URLs as needed, enhancing the overall functionality of the platform.
