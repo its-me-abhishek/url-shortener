@@ -4,7 +4,8 @@ const shortId = require('shortid')
 const shortUrlSchema = new mongoose.Schema({
   full: {
     type: String,
-    required: true
+    required: true,
+    unique: true,
   },
   short: {
     type: String,

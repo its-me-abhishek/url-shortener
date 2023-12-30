@@ -19,6 +19,11 @@ app.get('/', async (req, res) => {
 });
 
 app.post('/shortUrls', async (req, res) => {
+  const fullUrl = req.body.fullUrl;
+  const existingShortUrl = await ShortUrl.findOne({ full: fullUrl });
+  if (existingShortUrl) {
+    res.send("This URL has already been shortened");
+  }
   const newShortUrl = await ShortUrl.create({ full: req.body.fullUrl });
   generateQRCode(newShortUrl.short);
 
