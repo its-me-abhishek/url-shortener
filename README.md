@@ -4,6 +4,7 @@
 - The User can input a URL, shrink it, and use it!
 - Additionally, the system automatically generates a QR code for the shortened link.
 - Users have the flexibility to copy, share, and delete URLs as needed, enhancing the overall functionality of the platform.
+- If a user tries to shorten a URL that has already been shortened, a dialog will inform them about the duplication.
 
 ### Home Page
 ![1](https://github.com/its-me-abhishek/url-shortener/assets/114338679/5a69e78e-c61c-4026-a134-e3a519ec099d)
